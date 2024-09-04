@@ -17,7 +17,7 @@ export default function Vehicles() {
       <h2 className="my-3 font-bold text-xl">Vehicle List</h2>
       <div className="grid grid-cols-3 gap-4 container">
         {vehicles.map((vehicle: Vehicle) => (
-          <figure key={vehicle._id} className="hover:shadow animate-fadeIn">
+          <figure key={vehicle._id} className="hover:shadow animate-fadeIn duration-500">
             <img className="rounded-t-lg object-cover" src={`http://localhost:8000/images/vehicles/${vehicle.images[0]}`} alt={vehicle.model} />
             <figcaption className="p-3 relative">
               <div>

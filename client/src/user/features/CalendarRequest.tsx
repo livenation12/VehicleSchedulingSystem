@@ -6,6 +6,8 @@ import React, { useEffect, useState } from 'react';
 import Calendar, { CalendarProps } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import CarSelect from '@/assets/notfound.png';
+import { useToast } from '@/components/ui/use-toast';
+import { Checkbox } from '@/components/ui/checkbox';
 type DateRange = [Date | null, Date | null];
 
 const CalendarForm: React.FC = () => {
@@ -15,9 +17,7 @@ const CalendarForm: React.FC = () => {
   const [selectedDates, setSelectedDates] = useState<DateRange>([null, null]); // Dates selected in step 1
   const [animationDirection, setAnimationDirection] = useState<'next' | 'previous'>('next'); // Animation direction
   const [isAnimating, setIsAnimating] = useState<boolean>(false); // Animation state
-
-  console.log(selectedVehicle);
-  
+  const { toast } = useToast();
   // Adjust the type to match `react-calendar`'s expected type
   const handleDateChange: CalendarProps['onChange'] = (value) => {
     // Handle the case where dates is an array (for range selection)
@@ -28,7 +28,10 @@ const CalendarForm: React.FC = () => {
 
   const handleNextStep = () => {
     if (!selectedDates[0] || !selectedDates[1]) {
-      alert('Please select a range of dates before proceeding.');
+      toast({
+        title: 'Ooops!',
+        description: 'Please select a range of dates before proceeding.',
+      })
       return;
     }
     setAnimationDirection('next'); // Set direction for next step
@@ -48,6 +51,7 @@ const CalendarForm: React.FC = () => {
     }, 500); // Duration should match the animation duration
   };
 
+
   useEffect(() => {
     const fetchVehicles = async () => {
       const response = await useFetch('/vehicles', {});
@@ -55,8 +59,6 @@ const CalendarForm: React.FC = () => {
     };
     fetchVehicles();
   }, []);
-  console.log(vehicles);
-
 
   const renderStepContent = () => {
     let animationClasses = '';
@@ -104,36 +106,74 @@ const CalendarForm: React.FC = () => {
         );
       case 2:
         return (
-          <div
-            className={`transition-all duration-500 ease-in-out grid grid-cols-3 gap-10 relative ${animationClasses}`}
-          >
-            <div className='rounded-xl shadow-xl'>
-              <p className='px-5 py-2 pb-1'>{vehicles.length} Vehicles</p>
-              <ul className='max-h-[80vh] overflow-y-auto space-y-2'>
-                {vehicles.map((vehicle) => (
-                  <li key={vehicle._id} className='rounded border p-3 hover:opacity-70 relative group' onClick={() => setSelectedVehicle(vehicle)}>
-                    <p className="absolute hidden group-hover:block bg-white rounded-full p-3 text-sm text-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 shadow-lg">
-                      See full details
-                    </p>
-                    <img src={`http://localhost:8000/images/vehicles/${vehicle.images[0]}`} className='rounded' alt={vehicle.model} />
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className='col-span-2 rounded-xl shadow-xl p-5'>
-              <h2 className='text-3xl font-semibold inline-flex items-center gap-x-3'><ArrowLeft /> Select a vehicle</h2>
-              <p className='ms-10 text-xl'>See full details here</p>
-              <div className='flex justify-center'>
-                <img className='object-cover self-center mt-10' width={500} src={CarSelect} alt='Car Select' />
+          <>
+            <div
+              className={`transition-all duration-500 ease-in-out relative ${animationClasses}`}
+            >
+              <div className='flex justify-between'>
+                <div>
+                  <h2 className='text-4xl font-bold'>Step 2:</h2>
+                  <p className='ms-5 mt-2'>Choose the appropriate available vehicle for the campus on the left</p>
+                  <p className='ms-5'>See the vehicle details on the right, then <strong>submit</strong></p>
+                  <p className='ms-5'>Violaaa, your request is now submitted</p>
+                </div>
+                <div>
+                  <div className='bg-yellow-500 p-3 text-sm text-gray-100 rounded-lg'>
+                    <h4 className='font-semibold'>Your event date</h4>
+                    <p>{selectedDates[0]?.toLocaleDateString() || 'No date selected'} to {selectedDates[1]?.toLocaleDateString() || 'No date selected'}</p>
+                  </div>
+                </div>
               </div>
-              <div className='absolute bottom-0 right-0'>
-                <Button className="mr-4" onClick={handlePreviousStep}>
-                  Back
-                </Button>
-                <Button onClick={() => alert('Dates confirmed!')}>Confirm</Button>
+              <div className='grid lg:grid-cols-3 gap-4'>
+                <div className=''>
+                  <p className='px-5 py-2 pb-1'>{vehicles.length} Vehicles</p>
+                  <ul className='space-y-4 flex lg:flex-col'>
+                    {vehicles.map((vehicle) => (
+                      <li key={vehicle._id} className='rounded-lg border shadow-lg p-3 hover:opacity-70 relative group' onClick={() => setSelectedVehicle(vehicle)}>
+                        <p className="absolute hidden cursor-pointer group-hover:block bg-white rounded-full py-1 px-2 text-xs text-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 shadow-lg">
+                          Click to see full details
+                        </p>
+                        <img src={`${import.meta.env.VITE_UPLOAD_URL}/vehicles/${vehicle.images[0]}`} className='rounded object-cover' alt={vehicle.model} />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className='col-span-2'>
+                  <div className='p-5 rounded-xl border min-h-[500px] border-gray-300 sticky top-20 shadow-xl'>
+                    {selectedVehicle ? (
+                      <>
+                        <div className='max-w-full flex justify-center overflow-x-auto gap-1'>
+                          {selectedVehicle.images.map((image, index) => (
+                            <img key={index} src={`${import.meta.env.VITE_UPLOAD_URL}/vehicles/${image}`} className='object-cover h-52 rounded' alt={selectedVehicle.model} />
+                          ))}
+                        </div>
+                        <div className='m-14'>
+                          <p className='text-3xl font-semibold'>{selectedVehicle.model}  <sup className='text-base'>({selectedVehicle.year})</sup></p>
+                          <p className='ms-2'>{selectedVehicle.color}</p>
+                          <p className='ms-2'>{selectedVehicle.licensePlate}</p>
+
+                        </div>
+                        <div className='absolute bottom-3 right-3'>
+                          <Button variant={'ghost'} className="mr-2" onClick={handlePreviousStep}>Back to calendar</Button>
+                          <Button onClick={() => alert('Dates confirmed!')}>Confirm</Button>
+                        </div>
+                      </>
+                    )
+                      :
+                      <>
+                        <Button variant={'ghost'} className="float-right underline" onClick={handlePreviousStep}>Back to calendar</Button>
+                        <h2 className='text-3xl font-semibold inline-flex items-center gap-x-3'><ArrowLeft /> Select a vehicle</h2>
+                        <p className='ms-10 text-xl'>See full details here</p>
+                        <div className='flex justify-center'>
+                          <img className='object-cover self-center mt-10' width={500} src={CarSelect} alt='Car Select' />
+                        </div>
+                      </>
+                    }
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          </>
         );
       default:
         return null;

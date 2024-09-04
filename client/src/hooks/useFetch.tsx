@@ -24,7 +24,7 @@ export default async function useFetch(path: string, requestOptions: RequestMeth
   };
 
   try {
-    const response = await fetch(`http://localhost:8000/api${path}`, finalRequestOptions);
+    const response = await fetch(`${import.meta.env.VITE_SERVER_API_URL}/${path}`, finalRequestOptions);
 
     // Parse the response body as JSON
     return await response.json();
