@@ -3,7 +3,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { UserCircle } from "lucide-react";
 import { NavLink, Link } from "react-router-dom";
 import useFetch from "@/hooks/useFetch";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 export default function Navbar() {
   const { state, dispatch } = useAuth(); // Access state and dispatch from AuthContext  
   
@@ -21,8 +21,8 @@ export default function Navbar() {
       path: "/vehicles"
     },
     {
-      name: "Rate us",
-      path: "/rate",
+      name: "Requests",
+      path: "/requests",
     }
   ];
 

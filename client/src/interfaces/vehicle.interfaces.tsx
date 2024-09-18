@@ -1,3 +1,9 @@
+export type Schedule = {
+          _id?: string,
+          startDate: Date,
+          endDate: Date
+}
+
 export interface Vehicle {
           _id: string;
           licensePlate: string;
@@ -6,7 +12,5 @@ export interface Vehicle {
           color: string;
           maxCapacity: number;
           images: string[];
+          schedules: Schedule[];
 }
-
-// Using Omit to create VehicleForm by excluding the _id property from Vehicle
-export type VehicleForm = Omit<Vehicle, '_id'>;

@@ -29,3 +29,17 @@ export const adminAuth = (req, res, next) => {
           }
           next()
 }
+
+export const requireInviteToken = async (req, res, next) => {
+          const { token } = req.body
+          if (!token) {
+                    return res.status(403).json({ success: false, message: 'No token provided' })
+          }
+          try {
+                    const decoded = jwt.verify(token, process.env.SECRET_KEY)
+                    req.body.email = decoded.email
+                    next()
+          } catch (error) {
+                    return res.status(403).json({ success: false, message: 'Invalid token' })
+          }
+}

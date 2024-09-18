@@ -33,6 +33,10 @@ module.exports = {
           '0%': { opacity: '0', transform: 'translateX(-20px)' },
           '100%': { opacity: '1', transform: 'translateX(0)' },
         },
+        "fadeInRight": {
+          '0%': { opacity: '0', transform: 'translateX(0)' },
+          '100%': { opacity: '1', transform: 'translateX(-20px)' },
+        },
         "fadeIn": {
           '0%': { opacity: '0', transform: 'translateY(20px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
@@ -53,6 +57,7 @@ module.exports = {
         "fadeInScale": 'fadeInScale 2s ease-in-out forwards',
         "fadeIn": 'fadeIn 2s ease-in-out forwards',
         "fadeInLeft": 'fadeInLeft 2s ease-in-out forwards',
+        "fadeInRight": 'fadeInRight 2s ease-in-out forwards',
         "fadeInRotate": 'fadeInRotate 2s ease-in-out forwards',
 
       },

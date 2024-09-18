@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import AdminService from "../services/adminService.js";
 import ValidationError from './errorHandler.js';
+import { text } from 'express';
 
 const defaultCookieOptions = {
           httpOnly: true,
@@ -26,9 +27,9 @@ export const adminLogin = async (req, res) => {
           try {
                     const user = await AdminService.validateLogin(req.body)
                     if (user) {
-                              const token = createAdminToken(user._id)
+                              const token = createAdminToken({ id: user._id, email: user.email })
                               res.cookie('authToken', token, defaultCookieOptions)
-                              res.status(200).json({ success: true, user: user._id, email: user.email })
+                              res.status(200).json({ success: true, data: { id: user._id, email: user.email } })
                     } else {
                               res.status(400).json(new ValidationError('Invalid credentials', 'email', 400));
                     }
@@ -45,7 +46,7 @@ export const verifyAdminToken = async (req, res) => {
                     }
                     const decoded = jwt.verify(token, process.env.SECRET_KEY);
                     if (!decoded.isAdmin) {
-                              return res.status(401).json({ error: "Unauthorized access. Administrators only could access." });
+                              return res.status(401).json({ error: "Unauthorized access. Administrators only could access this page." });
                     }
                     res.status(200).json(decoded);
           } catch (error) {

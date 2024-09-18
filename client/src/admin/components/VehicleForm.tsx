@@ -3,16 +3,15 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import useFetch from "@/hooks/useFetch";
-import type { VehicleForm } from "@/interfaces";
+import type { Vehicle } from "@/interfaces";
 
 export default function VehicleForm() {
-          const { register, handleSubmit, setError, formState: { errors, isSubmitting }, reset } = useForm<VehicleForm>();
-          const onSubmit: SubmitHandler<VehicleForm> = async (data) => {
+          const { register, handleSubmit, setError, formState: { errors, isSubmitting }, reset } = useForm<Vehicle>();
+          const onSubmit: SubmitHandler<Vehicle> = async (data) => {
                     const formData = new FormData();
-
                     // Convert non-string values to strings before appending
                     Object.keys(data).forEach((key) => {
-                              const value = data[key as keyof VehicleForm];
+                              const value = data[key as keyof Vehicle];
                               if (key === "images" && value instanceof FileList) {
                                         // Handle file list separately
                                         Array.from(value).forEach(file => formData.append("images", file));
@@ -21,7 +20,7 @@ export default function VehicleForm() {
                                         formData.append(key, String(value));
                               } else if (Array.isArray(value)) {
                                         // Ensure that `value` is an array before calling `forEach`
-                                        value.forEach((item) => formData.append(key, item));
+                                        value.forEach((item: any) => formData.append(key, item));
                               } else {
                                         // Append strings as they are
                                         formData.append(key, value as string);
@@ -64,7 +63,6 @@ export default function VehicleForm() {
                               <Label className="ms-1">License Plate</Label>
                               <Input {...register("licensePlate", { required: "License Plate is required." })} />
                               <p className="text-red-500 ms-2 text-xs">{errors.licensePlate?.message}</p>
-
                               <Button type="submit" isLoading={isSubmitting}>Create</Button>
                     </form>
           );

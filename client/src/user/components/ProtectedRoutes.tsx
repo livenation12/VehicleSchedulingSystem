@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useToast } from '@/components/ui/use-toast';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../../hooks/useAuth';
+import useFetch from '@/hooks/useFetch';
 
 interface ProtectedRoutesProps {
           children: React.ReactNode;
@@ -16,13 +17,9 @@ const ProtectedRoutes = ({ children }: ProtectedRoutesProps) => {
                     const verifyAuth = async () => {
                               dispatch({ type: 'SET_LOADING', payload: true });
                               try {
-                                        const response = await fetch('http://localhost:8000/api/auth/verify', {
-                                                  credentials: 'include',
-                                        });
-
-                                        if (response.ok) {
-                                                  const userData = await response.json();
-                                                  dispatch({ type: 'LOGIN', payload: userData.user });
+                                        const response = await useFetch('/auth/verify', {});
+                                        if (response) {
+                                                  dispatch({ type: 'LOGIN', payload: response.user });
                                         } else {
                                                   dispatch({ type: 'LOGOUT' });
                                                   toast({

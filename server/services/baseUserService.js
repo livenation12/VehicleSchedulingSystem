@@ -40,6 +40,8 @@ class BaseUserService {
 
           // Exported methods
           async createNewUser(data) {
+                    console.log(data);
+                    
                     this.validateUser(data);
                     const userExists = await this.getUserByEmail(data.email);
                     if (userExists) {

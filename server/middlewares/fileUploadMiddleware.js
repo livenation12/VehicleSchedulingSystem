@@ -33,22 +33,6 @@ export const fileUpload = (req, res, next) => {
                               // Handle other errors
                               return res.status(500).json(new ValidationError(err.message, 'images', 400));
                     }
-
-                    // Extract the license plate from the request body
-                    const licensePlate = req.body.licensePlate;
-
-                    if (!licensePlate) {
-                              return res.status(400).json(new ValidationError('License plate is required', 'licensePlate', 400));
-                    }
-
-                    // Group files by license plate
-                    const groupedFiles = {};
-                    groupedFiles[licensePlate] = req.files;
-
-                    // Attach the grouped files to the request object for further processing
-                    req.groupedFiles = groupedFiles;
-
-                    // Call the next middleware or route handler
                     next();
           });
 };

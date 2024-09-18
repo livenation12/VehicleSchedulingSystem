@@ -29,8 +29,7 @@ const vehicleSchema = new mongoose.Schema({
           images: {
                     type: [String],
                     required: true,
-          }
-
+          },
 })
 
 export default mongoose.model("Vehicles", vehicleSchema)

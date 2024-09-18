@@ -1,12 +1,13 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator, DropdownMenuLabel } from "@/components/ui/dropdown-menu";
 import useFetch from "@/hooks/useFetch";
-import useUserStorage from "@/hooks/useUserStorage";
 import { NavLink, Link, useNavigate } from "react-router-dom";
-import { defaultUserStore } from "@/hooks/useUserStorage";
+import useUserStorage from "@/hooks/useUserStorage";
 import { UserRoundCogIcon } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 export default function AdminNavbar() {
-          const [user, setUser] = useUserStorage()
+          const { state, dispatch } = useAuth()
           const navigate = useNavigate()
+          const [user, setUser] = useUserStorage()
           const links = [
                     {
                               name: "Dashboard",
@@ -17,15 +18,19 @@ export default function AdminNavbar() {
                               path: "vehicles"
                     },
                     {
+                              name: "Requests",
+                              path: "requests"
+                    },
+                    {
                               name: "Users",
                               path: "users"
                     },
           ]
           const handleLogout = async () => {
-                    const response = await useFetch({ path: "/auth/logout", request: { method: 'GET', credentials: "include" } })
+                    const response = await useFetch("/auth/logout", {})
                     if (response.success) {
-                              navigate("/admin/gate")
-                              setUser(defaultUserStore)
+                              dispatch({ type: "LOGOUT" })
+                              setUser(null)
                     }
           }
 
@@ -49,7 +54,7 @@ export default function AdminNavbar() {
                                                                       <UserRoundCogIcon />
                                                             </DropdownMenuTrigger>
                                                             <DropdownMenuContent>
-                                                                      <DropdownMenuLabel>{user.email}</DropdownMenuLabel>
+                                                                      <DropdownMenuLabel>{state.user?.email}</DropdownMenuLabel>
                                                                       <DropdownMenuSeparator />
                                                                       <DropdownMenuItem onClick={() => handleLogout()}>Logout</DropdownMenuItem>
                                                             </DropdownMenuContent>

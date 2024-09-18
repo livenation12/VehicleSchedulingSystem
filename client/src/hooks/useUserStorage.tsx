@@ -16,7 +16,7 @@ export const defaultUserStore: UserStore = {
 
 // Custom hook to manage user storage
 export default function useUserStorage() {
-    const [user, setUser] = useLocalStorage("user", defaultUserStore);
+    const [user, setUser, removeUser] = useLocalStorage("user", defaultUserStore);
 
-    return [user, setUser];
+    return [user, setUser, removeUser];
 }

@@ -12,6 +12,7 @@ const __dirname = dirname(__filename);
 const app = express();
 app.use(cors({
   origin: 'http://localhost:5173', // replace with your client-side URL
+  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'PUT'],
   credentials: true
 }));
 app.use(express.json());

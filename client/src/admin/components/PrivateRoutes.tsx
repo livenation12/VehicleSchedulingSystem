@@ -1,51 +1,52 @@
 import React, { useEffect } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useToast } from '@/components/ui/use-toast';
-import { useAuth } from '@/user/hooks/useAuth';
+import { useAuth } from '@/hooks/useAuth';
+import useFetch from '@/hooks/useFetch';
+import { LoaderCircle } from 'lucide-react';
+import useUserStorage from '@/hooks/useUserStorage';
 
-interface PrivateRoutesProps {
-          children: React.ReactNode;
-}
-
-const PrivateRoutes = ({ children }: PrivateRoutesProps) => {
+const PrivateRoutes = ({ children }: { children: React.ReactNode }) => {
           const { state, dispatch } = useAuth();
           const { toast } = useToast();
           const location = useLocation();
-
+          const [_, setUser, removeUser] = useUserStorage();
           useEffect(() => {
                     const verifyAdmin = async () => {
                               dispatch({ type: 'SET_LOADING', payload: true });
                               try {
-                                        const response = await fetch('http://localhost:8000/api/admin/verify', {
-                                                  credentials: 'include',
-                                        });
+                                        const response = await useFetch("/admin/verify", {});
 
-                                        if (response.ok) {
-                                                  const userData = await response.json();
-                                                  dispatch({ type: 'LOGIN', payload: userData.user });
+                                        if (response.admin) {
+                                                  setUser(response.admin)
+                                                  dispatch({ type: 'LOGIN', payload: response.admin });
                                         } else {
                                                   dispatch({ type: 'LOGOUT' });
+                                                  removeUser()
                                                   toast({
                                                             title: 'Unauthorized',
-                                                            description: 'Please login',
+                                                            description: 'Please login as admin to continue',
                                                   });
                                         }
                               } catch (error) {
                                         dispatch({ type: 'LOGOUT' });
-                              } finally {
+                                        removeUser()
+                              }
+                              finally {
                                         dispatch({ type: 'SET_LOADING', payload: false });
                               }
                     };
-
                     verifyAdmin();
           }, [dispatch, toast]);
 
           if (state.isLoading) {
-                    return <div>Loading...</div>;
+                    return <div className='min-h-max h-screen min-w-max w-screen flex justify-center items-center'>
+                              <LoaderCircle className='animate-spin' size={50} />
+                    </div>;
           }
 
           if (!state.user) {
-                    return <Navigate to="/login" state={{ from: location }} replace />;
+                    return <Navigate to="/admin/gate" state={{ from: location }} replace />;
           }
 
           return <>{children}</>;

@@ -2,7 +2,7 @@ import React, { createContext, useReducer, ReactNode } from 'react';
 
 // Define User interface
 interface User {
-          user: string;
+          id: string;
           email: string;
           // Add any other user properties you have
 }

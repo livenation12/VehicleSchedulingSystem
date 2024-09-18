@@ -105,6 +105,7 @@ body {
 }
 
 .react-calendar__tile--now {
-  background-color: #e3f2fd;
+  background-color: #ffff1e;
   border-radius: 0.25rem;
+  color: #333;
 }
