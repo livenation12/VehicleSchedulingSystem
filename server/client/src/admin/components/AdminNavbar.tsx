@@ -1,13 +1,12 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator, DropdownMenuLabel } from "@/components/ui/dropdown-menu";
 import useFetch from "@/hooks/useFetch";
-import { NavLink, Link, useNavigate } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import useUserStorage from "@/hooks/useUserStorage";
 import { UserRoundCogIcon } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 export default function AdminNavbar() {
           const { state, dispatch } = useAuth()
-          const navigate = useNavigate()
-          const [user, setUser] = useUserStorage()
+          const [_, setUser] = useUserStorage()
           const links = [
                     {
                               name: "Dashboard",

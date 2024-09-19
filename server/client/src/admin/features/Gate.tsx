@@ -26,7 +26,7 @@ export default function Gate() {
     } else {
       setError(response.field, { type: "custom", message: response.message })
     }
-  }
+  }  
   const handleIconClick = () => {
     setIsPasswordShown(!isPasswordShown)
   }

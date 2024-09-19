@@ -1,6 +1,6 @@
 import useFetch from "@/hooks/useFetch"
 import { Vehicle } from "@/interfaces"
-import { Car, Signal, Users } from "lucide-react"
+import { Car, Users } from "lucide-react"
 import { useEffect, useState } from "react"
 export default function Vehicles() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([])

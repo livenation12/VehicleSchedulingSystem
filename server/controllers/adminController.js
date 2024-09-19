@@ -25,6 +25,8 @@ export const createAdmin = async (req, res) => {
 
 export const adminLogin = async (req, res) => {
           try {
+                    console.log(req.body);
+
                     const user = await AdminService.validateLogin(req.body)
                     if (user) {
                               const token = createAdminToken({ id: user._id, email: user.email })

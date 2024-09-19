@@ -25,12 +25,10 @@ export default async function useFetch(path: string, requestOptions: RequestMeth
 
   try {
     const response = await fetch(`${import.meta.env.VITE_SERVER_API_URL}${path}`, finalRequestOptions);
-
     // Parse the response body as JSON
     return await response.json();
   } catch (error) {
     console.error('Fetch error:', error);
-
     // Return the error response data if available
     return Promise.reject(error instanceof Error ? JSON.parse(error.message) : error);
   }

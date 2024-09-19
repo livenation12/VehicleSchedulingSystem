@@ -1,10 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChartContainer, ChartConfig } from "@/components/ui/chart"
-import { useAuth } from "@/hooks/useAuth"
 import { BarChart, Bar } from "recharts"
 
 export default function Dashboard() {
-  const { state } = useAuth()
   const chartData = [
     { month: "January", desktop: 186, mobile: 80 },
     { month: "February", desktop: 305, mobile: 200 },

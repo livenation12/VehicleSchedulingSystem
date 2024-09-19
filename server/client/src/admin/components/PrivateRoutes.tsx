@@ -4,25 +4,22 @@ import { useToast } from '@/components/ui/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import useFetch from '@/hooks/useFetch';
 import { LoaderCircle } from 'lucide-react';
-import useUserStorage from '@/hooks/useUserStorage';
 
 const PrivateRoutes = ({ children }: { children: React.ReactNode }) => {
           const { state, dispatch } = useAuth();
           const { toast } = useToast();
           const location = useLocation();
-          const [_, setUser, removeUser] = useUserStorage();
-          useEffect(() => {
-                    const verifyAdmin = async () => {
-                              dispatch({ type: 'SET_LOADING', payload: true });
-                              try {
-                                        const response = await useFetch("/admin/verify", {});
+          console.log(state);
 
+          useEffect(() => {
+                    dispatch({ type: 'SET_LOADING', payload: true });
+                    const verifyAdmin = async () => {
+                              try {
+                                        const response = await useFetch('/admin/verify', { method: 'GET', credentials: 'include' });
                                         if (response.admin) {
-                                                  setUser(response.admin)
                                                   dispatch({ type: 'LOGIN', payload: response.admin });
                                         } else {
                                                   dispatch({ type: 'LOGOUT' });
-                                                  removeUser()
                                                   toast({
                                                             title: 'Unauthorized',
                                                             description: 'Please login as admin to continue',
@@ -30,7 +27,6 @@ const PrivateRoutes = ({ children }: { children: React.ReactNode }) => {
                                         }
                               } catch (error) {
                                         dispatch({ type: 'LOGOUT' });
-                                        removeUser()
                               }
                               finally {
                                         dispatch({ type: 'SET_LOADING', payload: false });

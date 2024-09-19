@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Requests, StatusTypes } from '@/interfaces/requests.interface';
 import useFetch from '@/hooks/useFetch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Table, TableBody, TableHead, TableHeader, TableRow, TableCell } from '@/components/ui/table';
+import { Table, TableBody, TableRow, TableCell } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { formatDate } from '@/helper';
 import { useRequest } from '../hooks/useRequest';

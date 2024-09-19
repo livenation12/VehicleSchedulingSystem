@@ -12,7 +12,7 @@ export default function AdminUserDetails() {
           const { userId } = useParams()
           const [userDetails, setUserDetails] = useState<User>()
           const [userRequests, setUserRequests] = useState<Requests[]>()
-          const { register, handleSubmit, reset } = useForm({ defaultValues: {} });
+          const { reset } = useForm({ defaultValues: {} });
           const fetchUserDetails = async () => {
                     try {
                               const response = await useFetch(`/users/${userId}`, {})

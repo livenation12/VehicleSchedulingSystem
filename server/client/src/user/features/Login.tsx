@@ -6,7 +6,7 @@ import useFetch from "@/hooks/useFetch";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "../../hooks/useAuth";
 import { useState } from "react";
-import { EyeIcon, EyeOffIcon, Lock, UserCheck } from "lucide-react";
+import { EyeIcon, EyeOffIcon, Lock, UserCheck, UserCog } from "lucide-react";
 import { UserLogin } from "@/interfaces";
 
 interface LocationState {
@@ -32,7 +32,10 @@ export default function Login() {
           };
           return (
                     <div>
-                              <Link to={'/home'} className="inline-flex p-3 my-2 bg-blue-900 text-white mx-3 rounded-full text-sm justify-center font-semibold">Vehicle Scheduling System</Link>
+                              <div className="flex justify-between mx-10">
+                                        <Link to={'/home'} className="inline-flex p-3 my-2 bg-blue-900 text-white mx-3 rounded-full text-sm justify-center font-semibold">Vehicle Scheduling System</Link>
+                                        <Link to={'/admin/gate'} className="inline-flex gap-x-1.5 p-3 my-2 bg-white text-blue-900 mx-3 rounded-full text-sm justify-center font-semibold"><UserCog size={20} /> Login as admin</Link>
+                              </div>
                               <div className="flex flex-col justify-center items-center">
                                         <div className="flex flex-col justify-center mt-10 bg-white items-center shadow-md">
                                                   <h2 className="text-2xl font-semibold w-full text-center bg-gray-100 p-3">

@@ -2,3 +2,4 @@ server/node_modules
 server/.env
 server/client/node_modules
 server/client/.env
+server/images/vehicles

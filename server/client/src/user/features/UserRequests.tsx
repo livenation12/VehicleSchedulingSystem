@@ -8,11 +8,6 @@ import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogT
 export default function UserRequests() {
   const [requests, setRequests] = useState<Requests[]>([])
   const { state } = useAuth()
-  const status = [
-    { type: "Pending", color: "green" },
-    { type: "Approved", color: "blue" },
-    { type: "Rejected", color: "red" }]
-
   useEffect(() => {
     const fetchRequest = async () => {
       try {
