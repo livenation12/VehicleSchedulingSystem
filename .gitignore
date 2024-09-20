@@ -1,5 +1,5 @@
-server/node_modules
-server/.env
-server/client/node_modules
-server/client/.env
-server/images/vehicles
+node_modules
+.env
+client/node_modules
+client/.env
+images/vehicles
